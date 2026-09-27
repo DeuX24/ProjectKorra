@@ -36,7 +36,7 @@ public class CheckCommand extends PKCommand {
 			return;
 		}
 		if (!ProjectKorra.plugin.updater.isEnabled()) {
-			sender.sendMessage(ChatColor.YELLOW + "The update checker has been disabled in the config. Please enable it in order to use this command.");
+			sender.sendMessage(ChatColor.YELLOW + "Update checking is disabled in this unofficial ProjectKorra build.");
 		} else if (ProjectKorra.plugin.updater.updateAvailable()) {
 			sender.sendMessage(ChatColor.GREEN + this.newVersionAvailable.replace("ProjectKorra", ChatColor.GOLD + "ProjectKorra" + ChatColor.GREEN));
 			sender.sendMessage(ChatColor.YELLOW + this.curVersion.replace("{version}", ChatColor.RED + ProjectKorra.plugin.updater.getCurrentVersion() + ChatColor.YELLOW));

@@ -449,7 +449,7 @@ public class Suffocate extends AirAbility {
 				case "ItemStack" -> new ItemStack(Material.WHITE_WOOL);
 				case "Spell" -> new Particle.Spell(Color.WHITE, 1.0f);
 				case "Trail" -> new Particle.Trail(loc, Color.WHITE, 1);
-				case "Vibration" -> new Vibration(loc, new Vibration.Destination.BlockDestination(loc.getBlock()), 0);
+				case "Vibration" -> new Vibration(new Vibration.Destination.BlockDestination(loc.getBlock()), 0);
 				default -> null;
 			};
 

@@ -156,7 +156,7 @@ public class LavaSurgeWall extends LavaAbility {
 			}
 
 			if (!this.progressing) {
-				this.sourceBlock.getWorld().playEffect(this.location, Effect.SMOKE, 4, (int) this.range);
+				this.sourceBlock.getWorld().playEffect(this.location, Effect.SMOKE_SHOOT, 4, (int) this.range);
 				return;
 			}
 

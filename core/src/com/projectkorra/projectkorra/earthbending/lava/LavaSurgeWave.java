@@ -156,7 +156,7 @@ public class LavaSurgeWave extends LavaAbility {
 		if (System.currentTimeMillis() - this.time >= this.interval) {
 			this.time = System.currentTimeMillis();
 			if (!this.progressing) {
-				this.sourceBlock.getWorld().playEffect(this.location, Effect.SMOKE, 4, (int) this.range);
+				this.sourceBlock.getWorld().playEffect(this.location, Effect.SMOKE_SHOOT, 4, (int) this.range);
 				return;
 			}
 

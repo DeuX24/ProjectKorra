@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.projectkorra.projectkorra.util.SoundUtil;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -415,7 +416,7 @@ public class AirBlast extends AirAbility {
 
 				door.setOpen(!door.isOpen());
 				testblock.setBlockData(door);
-				testblock.getWorld().playSound(testblock.getLocation(), Sound.valueOf("BLOCK_WOODEN_DOOR_" + (door.isOpen() ? "OPEN" : "CLOSE")), 0.5f, 0);
+				testblock.getWorld().playSound(testblock.getLocation(), SoundUtil.getSound("BLOCK_WOODEN_DOOR_" + (door.isOpen() ? "OPEN" : "CLOSE")), 0.5f, 0);
 				this.affectedLevers.add(testblock);
 			}
 		} else if (Arrays.asList(TDOORS).contains(testblock.getType())) {
@@ -434,7 +435,7 @@ public class AirBlast extends AirAbility {
 
 				tDoor.setOpen(!tDoor.isOpen());
 				testblock.setBlockData(tDoor);
-				testblock.getWorld().playSound(testblock.getLocation(), Sound.valueOf("BLOCK_WOODEN_TRAPDOOR_" + (tDoor.isOpen() ? "OPEN" : "CLOSE")), 0.5f, 0);
+				testblock.getWorld().playSound(testblock.getLocation(), SoundUtil.getSound("BLOCK_WOODEN_TRAPDOOR_" + (tDoor.isOpen() ? "OPEN" : "CLOSE")), 0.5f, 0);
 			}
 		} else if (Arrays.asList(BUTTONS).contains(testblock.getType())) {
 			if (testblock.getBlockData() instanceof Switch) {

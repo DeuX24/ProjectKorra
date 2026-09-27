@@ -4,7 +4,7 @@
 
   <groupId>com.projectkorra</groupId>
   <artifactId>projectkorra</artifactId>
-  <version>1.13.0</version>
+  <version>26.2-1</version>
   <packaging>jar</packaging>
 
   <name>ProjectKorra</name>
@@ -108,9 +108,9 @@
     <!-- Minecraft Timings -->
     <!-- Spigot API -->
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.21.11-R0.2-SNAPSHOT</version>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>26.2.build.129-stable</version>
       <scope>provided</scope>
     </dependency>
     <!-- lang3 -->
@@ -199,12 +199,24 @@
       <artifactId>RedProtect-Core</artifactId>
       <version>7.7.2</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.spongepowered</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>br.net.fabiozumbi12.RedProtect</groupId>
       <artifactId>RedProtect-Spigot</artifactId>
       <version>7.7.2</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.spongepowered</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- PlaceholderAPI -->
     <dependency>
@@ -219,6 +231,12 @@
       <artifactId>api</artifactId>
       <version>2.1.0-SNAPSHOT</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>net.kyori</groupId>
+          <artifactId>event-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- Plan -->
     <dependency>
@@ -262,8 +280,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <source>21</source>
-          <target>21</target>
+          <release>25</release>
         </configuration>
       </plugin>
       <plugin>
@@ -328,7 +345,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.2</version>
         <configuration>
           <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
           <filters>

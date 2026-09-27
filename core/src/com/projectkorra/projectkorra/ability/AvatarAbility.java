@@ -1,5 +1,6 @@
 package com.projectkorra.projectkorra.ability;
 
+import com.projectkorra.projectkorra.util.SoundUtil;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -37,7 +38,7 @@ public abstract class AvatarAbility extends ElementalAbility {
 			Sound sound = Sound.BLOCK_BEACON_POWER_SELECT;
 
 			try {
-				sound = Sound.valueOf(ConfigManager.avatarStateConfig.get().getString("AvatarState.Sound.Sound"));
+				sound = SoundUtil.getSound(ConfigManager.avatarStateConfig.get().getString("AvatarState.Sound.Sound"));
 			} catch (final IllegalArgumentException exception) {
 				ProjectKorra.log.warning("Your current value for 'AvatarState.Sound.Sound' is not valid.");
 			} finally {

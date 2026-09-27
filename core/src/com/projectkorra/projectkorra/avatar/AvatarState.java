@@ -18,7 +18,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.projectkorra.projectkorra.ability.AvatarAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
-import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.jetbrains.annotations.NotNull;
 
 public class AvatarState extends AvatarAbility {
@@ -49,7 +48,7 @@ public class AvatarState extends AvatarAbility {
 		}
 
 		for (String key : ConfigManager.avatarStateConfig.get().getConfigurationSection("PotionEffects").getKeys(false)) {
-			final PotionEffectType type = PotionEffectTypeWrapper.getByName(key);
+			final PotionEffectType type = PotionEffectType.getByName(key);
 			if (type == null) {
 				ProjectKorra.log.warning("Invalid PotionEffectType: " + key + " in AvatarState config.");
 				continue;

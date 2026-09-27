@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.projectkorra.projectkorra.util.SoundUtil;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -375,7 +376,7 @@ public abstract class WaterAbility extends ElementalAbility {
 			Sound sound = Sound.ITEM_FLINTANDSTEEL_USE;
 
 			try {
-				sound = Sound.valueOf(getConfig().getString("Properties.Water.IceSound.Sound"));
+				sound = SoundUtil.getSound(getConfig().getString("Properties.Water.IceSound.Sound"));
 			} catch (final IllegalArgumentException exception) {
 				ProjectKorra.log.warning("Your current value for 'Properties.Water.IceSound.Sound' is not valid.");
 			} finally {
@@ -392,7 +393,7 @@ public abstract class WaterAbility extends ElementalAbility {
 			Sound sound = Sound.BLOCK_MUD_STEP;
 
 			try {
-				sound = Sound.valueOf(getConfig().getString("Properties.Water.MudSound.Sound"));
+				sound = SoundUtil.getSound(getConfig().getString("Properties.Water.MudSound.Sound"));
 			} catch (final IllegalArgumentException exception) {
 				ProjectKorra.log.warning("Your current value for 'Properties.Water.MudSound.Sound' is not valid.");
 			} finally {
@@ -409,7 +410,7 @@ public abstract class WaterAbility extends ElementalAbility {
 			Sound sound = Sound.BLOCK_GRASS_STEP;
 
 			try {
-				sound = Sound.valueOf(getConfig().getString("Properties.Water.PlantSound.Sound"));
+				sound = SoundUtil.getSound(getConfig().getString("Properties.Water.PlantSound.Sound"));
 			} catch (final IllegalArgumentException exception) {
 				ProjectKorra.log.warning("Your current value for 'Properties.Water.PlantSound.Sound' is not valid.");
 			} finally {
@@ -426,7 +427,7 @@ public abstract class WaterAbility extends ElementalAbility {
 			Sound sound = Sound.BLOCK_WATER_AMBIENT;
 
 			try {
-				sound = Sound.valueOf(getConfig().getString("Properties.Water.WaterSound.Sound"));
+				sound = SoundUtil.getSound(getConfig().getString("Properties.Water.WaterSound.Sound"));
 			} catch (final IllegalArgumentException exception) {
 				ProjectKorra.log.warning("Your current value for 'Properties.Water.WaterSound.Sound' is not valid.");
 			} finally {

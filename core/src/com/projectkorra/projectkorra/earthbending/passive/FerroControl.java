@@ -10,6 +10,7 @@ import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.Player;
 
+import com.projectkorra.projectkorra.util.SoundUtil;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.MetalAbility;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
@@ -58,7 +59,7 @@ public class FerroControl extends MetalAbility implements PassiveAbility {
 
 		if (used) {
 			final String sound = "BLOCK_IRON_" + (tDoor ? "TRAP" : "") + "DOOR_" + (open ? "OPEN" : "CLOSE");
-			this.block.getWorld().playSound(this.block.getLocation(), Sound.valueOf(sound), 0.5f, 0);
+			this.block.getWorld().playSound(this.block.getLocation(), SoundUtil.getSound(sound), 0.5f, 0);
 			this.bPlayer.addCooldown(this, 200);
 		}
 		this.remove();

@@ -155,7 +155,7 @@ public class AirSweep extends AirAbility implements ComboAbility {
 					case "ItemStack" -> new ItemStack(Material.WHITE_WOOL);
 					case "Spell" -> new Particle.Spell(Color.WHITE, 1.0f);
 					case "Trail" -> new Particle.Trail(endLoc, Color.WHITE, 1);
-					case "Vibration" -> new Vibration(endLoc, new Vibration.Destination.BlockDestination(endLoc.getBlock()), 0);
+					case "Vibration" -> new Vibration(new Vibration.Destination.BlockDestination(endLoc.getBlock()), 0);
 					default -> null;
 				};
 

@@ -84,7 +84,7 @@ public class Tremorsense extends EarthAbility {
 					}
 				}
 				if (foundAir) {
-					smokeBlock.getWorld().playEffect(smokeBlock.getRelative(BlockFace.UP).getLocation(), Effect.SMOKE, 4, this.radius);
+					smokeBlock.getWorld().playEffect(smokeBlock.getRelative(BlockFace.UP).getLocation(), Effect.SMOKE_SHOOT, 4, this.radius);
 				}
 			}
 		}

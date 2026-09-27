@@ -153,9 +153,9 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
@@ -1895,7 +1895,7 @@ public class PKListener implements Listener {
 
 		Player player = event.getPlayer();
 		ItemStack mainHand = player.getInventory().getItemInMainHand();
-		if (EnchantmentTarget.WEARABLE.includes(mainHand) && EnchantmentTarget.ARMOR.includes(mainHand) && TempArmor.hasTempArmor(player)) {
+		if (Tag.ITEMS_ENCHANTABLE_ARMOR.isTagged(mainHand.getType()) && TempArmor.hasTempArmor(player)) {
 			event.setCancelled(true);
 		}
 	}

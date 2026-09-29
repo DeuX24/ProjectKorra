@@ -2,12 +2,14 @@ package com.projectkorra.projectkorra.earthbending.metal;
 
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.projectkorra.projectkorra.GeneralMethods;
@@ -123,6 +125,17 @@ public class Extraction extends MetalAbility {
 			item = new ItemStack(Material.RAW_COPPER, this.getAmount(2));
 			break;
 		default:
+			return;
+		}
+
+		// Fire a break event so other plugins (e.g. skills/mining XP, logging) treat this as the player mining the ore.
+		// Drops are handled below, so the event must not drop anything itself.
+		final BlockBreakEvent breakEvent = new BlockBreakEvent(this.originBlock, this.player);
+		breakEvent.setDropItems(false);
+		breakEvent.setExpToDrop(0);
+		Bukkit.getPluginManager().callEvent(breakEvent);
+		if (breakEvent.isCancelled()) {
+			this.remove();
 			return;
 		}
 

@@ -58,7 +58,7 @@ public class ConfigManager {
 		} else if (type == ConfigType.LANGUAGE) {
 			config = languageConfig.get();
 
-			config.addDefault("Chat.Enable", !hasChatPlugin());
+			config.addDefault("Chat.Enable", false);
 			config.addDefault("Chat.Format", "<name>: <message>");
 			config.addDefault("Chat.Colors.Avatar", ChatColor.DARK_PURPLE.getName());
 			config.addDefault("Chat.Colors.Air", ChatColor.GRAY.getName());

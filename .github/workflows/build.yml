@@ -18,5 +18,6 @@ jobs:
       - run: mvn -B -DskipTests -Dmaven.javadoc.skip=true package
       - uses: actions/upload-artifact@v7
         with:
+          archive: false
           name: ProjectKorra
           path: target/ProjectKorra-*.jar

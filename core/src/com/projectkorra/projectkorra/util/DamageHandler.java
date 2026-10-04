@@ -200,11 +200,11 @@ public class DamageHandler {
 				}
 			}
 
-			DamageSource.Builder damageSourceBuilder = DamageSource.builder(DamageType.GENERIC)
-					.withCausingEntity(source);
-			if (!doSourcelessDamage) {
-				damageSourceBuilder = damageSourceBuilder.withDirectEntity(source);
-			}
+			// Paper requires a direct entity whenever a causing entity is set, so "sourceless" damage (e.g. burn
+			// damage from firebending) sets both too. GENERIC damage never knocks back, so the result is the same.
+			final DamageSource.Builder damageSourceBuilder = DamageSource.builder(DamageType.GENERIC)
+					.withCausingEntity(source)
+					.withDirectEntity(source);
 
 			final double prevHealth = lent.getHealth();
 			BEING_DAMAGED.add(lent); //Stops StackOverflows

@@ -182,7 +182,7 @@ public class AvatarState extends AvatarAbility {
 	 */
 	@Deprecated
 	public static double getValue(final double value) {
-		final double factor = getConfig().getDouble("Abilities.Avatar.AvatarState.PowerMultiplier");
+		final double factor = getConfig().getDouble("Abilities.Avatar.AvatarState.PowerMultiplier", 1.0); // removed setting: don't scale by 0
 		return factor * value;
 	}
 

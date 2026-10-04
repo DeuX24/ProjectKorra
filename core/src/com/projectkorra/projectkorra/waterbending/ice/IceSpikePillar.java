@@ -139,7 +139,7 @@ public class IceSpikePillar extends IceAbility {
 		this.direction = new Vector(0, 1, 0);
 		this.speed = getConfig().getDouble("Abilities.Water.IceSpike.Speed");
 		this.slowCooldown = getConfig().getLong("Abilities.Water.IceSpike.SlowCooldown");
-		this.slowPower = getConfig().getInt("Abilities.Water.IceSpike.SlowPower");
+		this.slowPower = getConfig().getInt("Abilities.Water.IceSpike.SlowPotency");
 		this.slowDuration = getConfig().getInt("Abilities.Water.IceSpike.SlowDuration");
 		this.damage = getConfig().getDouble("Abilities.Water.IceSpike.Damage");
 		this.range = getConfig().getDouble("Abilities.Water.IceSpike.Range");

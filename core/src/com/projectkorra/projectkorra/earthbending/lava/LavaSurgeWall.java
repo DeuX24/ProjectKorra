@@ -1,5 +1,6 @@
 package com.projectkorra.projectkorra.earthbending.lava;
 
+import com.projectkorra.projectkorra.attribute.Attribute;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,7 +17,6 @@ import org.bukkit.util.Vector;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.ElementalAbility;
 import com.projectkorra.projectkorra.ability.LavaAbility;
-import com.projectkorra.projectkorra.avatar.AvatarState;
 import com.projectkorra.projectkorra.firebending.FireBlast;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.BlockSource.BlockSourceType;
@@ -35,7 +35,9 @@ public class LavaSurgeWall extends LavaAbility {
 	private long time;
 	private long interval;
 	private long cooldown;
+	@Attribute(Attribute.RADIUS)
 	private double radius;
+	@Attribute(Attribute.RANGE)
 	private double range;
 	private Block sourceBlock;
 	private Location location;
@@ -56,11 +58,6 @@ public class LavaSurgeWall extends LavaAbility {
 		if (wave != null && wave.isProgressing()) {
 			LavaSurgeWave.launch(player);
 			return;
-		}
-
-		if (this.bPlayer.isAvatarState()) {
-			this.radius = AvatarState.getValue(this.radius);
-			this.range = AvatarState.getValue(this.range);
 		}
 
 		if (!this.bPlayer.canBend(this)) {

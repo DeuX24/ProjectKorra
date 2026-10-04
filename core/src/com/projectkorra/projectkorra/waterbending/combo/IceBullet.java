@@ -29,7 +29,6 @@ import com.projectkorra.projectkorra.ability.IceAbility;
 import com.projectkorra.projectkorra.ability.util.Collision;
 import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformation;
 import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.avatar.AvatarState;
 import com.projectkorra.projectkorra.firebending.combo.FireComboStream;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.ClickType;
@@ -53,6 +52,7 @@ public class IceBullet extends IceAbility implements ComboAbility {
 	private double range;
 	@Attribute(Attribute.RADIUS) @DayNightFactor
 	private double radius;
+	@Attribute("ShootTime")
 	private double shootTime;
 	private double shots;
 	@Attribute("MaxShots")
@@ -91,13 +91,6 @@ public class IceBullet extends IceAbility implements ComboAbility {
 		this.maxShots = getConfig().getInt("Abilities.Water.IceBullet.MaxShots");
 		this.animationSpeed = getConfig().getDouble("Abilities.Water.IceBullet.AnimationSpeed");
 		this.speed = 1;
-
-		if (this.bPlayer.isAvatarState()) {
-			this.damage = AvatarState.getValue(this.damage);
-			this.range = AvatarState.getValue(this.range);
-			this.shootTime = AvatarState.getValue(this.shootTime);
-			this.maxShots = AvatarState.getValue(this.maxShots);
-		}
 
 		this.start();
 	}

@@ -22,7 +22,6 @@ import com.projectkorra.projectkorra.ability.AirAbility;
 import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.avatar.AvatarState;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.ClickType;
 import com.projectkorra.projectkorra.util.DamageHandler;
@@ -206,7 +205,7 @@ public class OctopusForm extends WaterAbility {
 				continue;
 			}
 
-			final double knock = this.bPlayer.isAvatarState() ? AvatarState.getValue(this.knockback) : this.knockback;
+			final double knock = this.knockback;
 			GeneralMethods.setVelocity(this, entity, GeneralMethods.getDirection(this.player.getLocation(), location).normalize().multiply(knock));
 
 			if (entity instanceof LivingEntity) {

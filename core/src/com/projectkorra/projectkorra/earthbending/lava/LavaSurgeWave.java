@@ -1,5 +1,6 @@
 package com.projectkorra.projectkorra.earthbending.lava;
 
+import com.projectkorra.projectkorra.attribute.Attribute;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,7 +16,6 @@ import org.bukkit.util.Vector;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.ElementalAbility;
 import com.projectkorra.projectkorra.ability.LavaAbility;
-import com.projectkorra.projectkorra.avatar.AvatarState;
 import com.projectkorra.projectkorra.firebending.FireBlast;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.BlockSource.BlockSourceType;
@@ -28,10 +28,14 @@ public class LavaSurgeWave extends LavaAbility {
 	private boolean canHitSelf;
 	private long time;
 	private long cooldown;
+	@Attribute(Attribute.RANGE)
 	private double range;
 	private double radius;
+	@Attribute(Attribute.RADIUS)
 	private double maxRadius;
+	@Attribute(Attribute.KNOCKBACK)
 	private double horizontalPush;
+	@Attribute("Vertical" + Attribute.KNOCKBACK)
 	private double verticalPush;
 	private double interval;
 	private Location location;
@@ -55,13 +59,6 @@ public class LavaSurgeWave extends LavaAbility {
 		this.verticalPush = getConfig().getDouble("Abilities.Earth.LavaSurge.VerticalPush");
 		this.waveBlocks = new ConcurrentHashMap<Block, Block>();
 		this.frozenBlocks = new ConcurrentHashMap<Block, Block>();
-
-		if (this.bPlayer.isAvatarState()) {
-			this.range = AvatarState.getValue(this.range);
-			this.maxRadius = AvatarState.getValue(this.maxRadius);
-			this.horizontalPush = AvatarState.getValue(this.horizontalPush);
-			this.verticalPush = AvatarState.getValue(this.verticalPush);
-		}
 
 		if (this.prepare()) {
 			final LavaSurgeWave wave = getAbility(player, LavaSurgeWave.class);

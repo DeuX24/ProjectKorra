@@ -26,7 +26,6 @@ import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AirAbility;
 import com.projectkorra.projectkorra.ability.WaterAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
-import com.projectkorra.projectkorra.avatar.AvatarState;
 import com.projectkorra.projectkorra.command.Commands;
 import com.projectkorra.projectkorra.util.BlockSource;
 import com.projectkorra.projectkorra.util.ClickType;
@@ -593,10 +592,7 @@ public class Torrent extends WaterAbility {
 		final Vector vec = new Vector(vx, 0, vz).normalize().multiply(this.knockback);
 		final Vector velocity = entity.getVelocity();
 
-		if (this.bPlayer.isAvatarState()) {
-			velocity.setX(AvatarState.getValue(vec.getX()));
-			velocity.setZ(AvatarState.getValue(vec.getZ()));
-		} else {
+		{
 			velocity.setX(vec.getX());
 			velocity.setZ(vec.getY());
 		}

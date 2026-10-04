@@ -93,7 +93,6 @@ public class IceBullet extends IceAbility implements ComboAbility {
 		this.speed = 1;
 
 		if (this.bPlayer.isAvatarState()) {
-			this.cooldown = getConfig().getLong("Abilities.Avatar.AvatarState.Water.IceBullet.Cooldown");
 			this.damage = AvatarState.getValue(this.damage);
 			this.range = AvatarState.getValue(this.range);
 			this.shootTime = AvatarState.getValue(this.shootTime);

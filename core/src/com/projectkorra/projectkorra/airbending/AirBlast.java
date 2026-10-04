@@ -132,11 +132,6 @@ public class AirBlast extends AirAbility {
 		this.canPressButtons = false;
 		this.canFlickLevers = false;
 
-		if (this.bPlayer.isAvatarState()) {
-			this.pushFactor = getConfig().getDouble("Abilities.Avatar.AvatarState.Air.AirBlast.Push.Self");
-			this.pushFactorForOthers = getConfig().getDouble("Abilities.Avatar.AvatarState.Air.AirBlast.Push.Entities");
-		}
-
 		this.pushFactor *= modifiedPushFactor;
 
 		this.start();

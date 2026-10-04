@@ -12,7 +12,11 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.attribute.Attribute;
+import com.projectkorra.projectkorra.attribute.AttributeCache;
+import com.projectkorra.projectkorra.attribute.AttributeUtil;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 
 /**
@@ -25,7 +29,7 @@ import com.projectkorra.projectkorra.configuration.ConfigManager;
 public class SetCommand extends PKCommand {
 
 	public SetCommand() {
-		super("set", "/bending set <ability> [option] [value|default]", ConfigManager.languageConfig.get().getString("Commands.Set.Description"), new String[] { "set" });
+		super("set", "/bending set <ability> [option|avatar.<attribute>] [value|default]", ConfigManager.languageConfig.get().getString("Commands.Set.Description"), new String[] { "set" });
 	}
 
 	@Override
@@ -34,6 +38,10 @@ public class SetCommand extends PKCommand {
 			return;
 		}
 		final FileConfiguration config = ConfigManager.defaultConfig.get();
+		if (args.size() >= 2 && args.get(1).toLowerCase(Locale.ROOT).startsWith(AVATAR_PREFIX)) {
+			this.avatar(sender, args);
+			return;
+		}
 		final String section = findSection(config, args.get(0));
 		if (section == null) {
 			sender.sendMessage(ChatColor.RED + "No ability called '" + args.get(0) + "' has config options.");
@@ -47,7 +55,18 @@ public class SetCommand extends PKCommand {
 			for (final Map.Entry<String, Object> e : options.entrySet()) {
 				sender.sendMessage(ChatColor.YELLOW + "  " + e.getKey() + ": " + ChatColor.WHITE + e.getValue());
 			}
+			final CoreAbility core = CoreAbility.getAbility(ability);
+			final Map<String, String> avatar = core == null ? Map.of() : avatarValues(core);
+			if (!avatar.isEmpty()) {
+				sender.sendMessage(ChatColor.LIGHT_PURPLE + "In the Avatar State (avatarstate.yml):");
+				for (final Map.Entry<String, String> e : avatar.entrySet()) {
+					sender.sendMessage(ChatColor.LIGHT_PURPLE + "  " + AVATAR_PREFIX + e.getKey() + ": " + ChatColor.WHITE + e.getValue());
+				}
+			}
 			sender.sendMessage(ChatColor.GRAY + "Change one with /bending set " + ability + " <option> <value>, or 'default' to reset it.");
+			if (!avatar.isEmpty()) {
+				sender.sendMessage(ChatColor.GRAY + "Avatar State values are multipliers of the normal value, e.g. x2.0 or +50%; a plain number replaces it.");
+			}
 			return;
 		}
 
@@ -84,6 +103,103 @@ public class SetCommand extends PKCommand {
 		config.set(path, value);
 		ConfigManager.defaultConfig.save();
 		sender.sendMessage(ChatColor.GREEN + ability + " " + option + ": " + ChatColor.GRAY + current + ChatColor.GREEN + " -> " + ChatColor.WHITE + value);
+	}
+
+	private static final String AVATAR_PREFIX = "avatar.";
+
+	/** /bending set <ability> avatar.<attribute> [value|default] */
+	private void avatar(final CommandSender sender, final List<String> args) {
+		final CoreAbility ability = CoreAbility.getAbility(args.get(0));
+		final Map<String, AttributeCache> caches = ability == null ? null : CoreAbility.getAttributeCache(ability);
+		if (caches == null || caches.isEmpty()) {
+			sender.sendMessage(ChatColor.RED + "No ability called '" + args.get(0) + "' has Avatar State values.");
+			return;
+		}
+		final String wanted = args.get(1).substring(AVATAR_PREFIX.length());
+		String attribute = null;
+		for (final String a : caches.keySet()) {
+			if (a.equalsIgnoreCase(wanted)) {
+				attribute = a;
+			}
+		}
+		if (attribute == null) {
+			sender.sendMessage(ChatColor.RED + ability.getName() + " has no attribute '" + wanted + "'. Its attributes: " + String.join(", ", caches.keySet()));
+			return;
+		}
+		final FileConfiguration config = ConfigManager.avatarStateConfig.get();
+		final String path = avatarPath(ability, attribute);
+		final String label = ability.getName() + " " + AVATAR_PREFIX + attribute;
+		final String before = avatarValues(ability).get(attribute);
+
+		if (args.size() == 2) {
+			sender.sendMessage(ChatColor.LIGHT_PURPLE + label + ": " + ChatColor.WHITE + before);
+			return;
+		}
+
+		final String input = args.get(2).replace(" ", "");
+		if (input.equalsIgnoreCase("default")) {
+			final Configuration defaults = config.getDefaults();
+			config.set(path, defaults != null && defaults.contains(path) ? defaults.get(path) : null);
+		} else if (input.equalsIgnoreCase("true") || input.equalsIgnoreCase("false")) {
+			config.set(path, Boolean.parseBoolean(input.toLowerCase(Locale.ROOT)));
+		} else if (AttributeUtil.getModification(input) != null) {
+			// Keep plain numbers as numbers (a fixed value); everything else (x2.0, +50%, ...) as text.
+			Object value = input;
+			try {
+				value = input.contains(".") ? (Object) Double.parseDouble(input) : (Object) Long.parseLong(input);
+			} catch (final NumberFormatException ignored) {
+				// a modifier such as x2.0
+			}
+			config.set(path, value);
+		} else {
+			sender.sendMessage(ChatColor.RED + "'" + input + "' isn't a valid Avatar State value. Use a multiplier like x2.0, a change like +50% or +3, or a plain number.");
+			return;
+		}
+		ConfigManager.avatarStateConfig.save();
+		for (final AttributeCache cache : caches.values()) {
+			cache.calculateAvatarStateModifier(ability); // takes effect from the next use
+		}
+		sender.sendMessage(ChatColor.GREEN + label + ": " + ChatColor.GRAY + before + ChatColor.GREEN + " -> " + ChatColor.WHITE + avatarValues(ability).get(attribute));
+	}
+
+	/** Where avatarstate.yml keeps an ability's own value for an attribute (mirrors AttributeCache). */
+	private static String avatarPath(final CoreAbility ability, final String attribute) {
+		final String configName = attribute.equals(Attribute.AVATAR_STATE_TOGGLE) ? "IsToggle" : attribute;
+		return "Abilities." + parentElementName(ability) + "." + ability.getName() + "." + configName;
+	}
+
+	private static String parentElementName(final CoreAbility ability) {
+		final Element element = ability.getElement();
+		return element instanceof Element.SubElement ? ((Element.SubElement) element).getParentElement().getName() : element.getName();
+	}
+
+	/** Each attribute's Avatar State value and where it comes from, e.g. "x2.5" or "x1.5 (all Air abilities)". */
+	private static Map<String, String> avatarValues(final CoreAbility ability) {
+		final Map<String, String> values = new LinkedHashMap<>();
+		final Map<String, AttributeCache> caches = CoreAbility.getAttributeCache(ability);
+		if (caches == null) {
+			return values;
+		}
+		final FileConfiguration config = ConfigManager.avatarStateConfig.get();
+		for (final String attribute : caches.keySet()) {
+			Object own = config.get(avatarPath(ability, attribute));
+			if (own != null && !(own instanceof ConfigurationSection)) {
+				values.put(attribute, String.valueOf(own));
+				continue;
+			}
+			final Object element = config.get("Abilities." + ability.getElement().getName() + "._All." + attribute);
+			if (element != null && !(element instanceof ConfigurationSection)) {
+				values.put(attribute, element + ChatColor.GRAY.toString() + " (all " + ability.getElement().getName() + " abilities)");
+				continue;
+			}
+			final Object all = config.get("Abilities._All." + attribute);
+			if (all != null && !(all instanceof ConfigurationSection)) {
+				values.put(attribute, all + ChatColor.GRAY.toString() + " (all abilities)");
+				continue;
+			}
+			values.put(attribute, "unchanged");
+		}
+		return values;
 	}
 
 	/** The config section of an ability, e.g. "Abilities.Air.AirBlast", matched case-insensitively. */
@@ -197,6 +313,16 @@ public class SetCommand extends PKCommand {
 			if (section != null) {
 				list.addAll(options(config, section).keySet());
 			}
+			final CoreAbility ability = CoreAbility.getAbility(args.get(0));
+			if (ability != null && CoreAbility.getAttributeCache(ability) != null) {
+				for (final String attribute : CoreAbility.getAttributeCache(ability).keySet()) {
+					list.add(AVATAR_PREFIX + attribute);
+				}
+			}
+		} else if (args.size() == 2 && args.get(1).toLowerCase(Locale.ROOT).startsWith(AVATAR_PREFIX)) {
+			list.add("x1.5");
+			list.add("x2.0");
+			list.add("default");
 		} else if (args.size() == 2) {
 			final String section = findSection(config, args.get(0));
 			if (section != null) {

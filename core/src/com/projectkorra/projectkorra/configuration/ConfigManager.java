@@ -1819,7 +1819,8 @@ public class ConfigManager {
 			config.addDefault("Abilities.Air.AirBlast.SelfPush", "x2.0");
 			config.addDefault("Abilities.Air.AirBlast.Cooldown", 200);
 			config.addDefault("Abilities.Air.AirSpout.Height", 40);
-			config.addDefault("Abilities.Air.AirSuction.Push", 3.5);
+			config.addDefault("Abilities.Air.AirSuction.Knockback", "x1.75");
+			config.addDefault("Abilities.Air.AirSuction.KnockbackOthers", "x2.7");
 			config.addDefault("Abilities.Air.AirSwipe.Cooldown", 1000);
 			config.addDefault("Abilities.Air.AirSwipe.Damage", "x2.0");
 			config.addDefault("Abilities.Air.AirSwipe.Knockback", "x2.0");
@@ -1828,7 +1829,7 @@ public class ConfigManager {
 			config.addDefault("Abilities.Air.AirBurst.ChargeTime", 1000);
 			config.addDefault("Abilities.Air.AirBurst.Damage", 3);
 			config.addDefault("Abilities.Air.AirShield.IsToggle", true);
-			config.addDefault("Abilities.Air.AirShield.Knockback", 2.5);
+			config.addDefault("Abilities.Air.AirShield.Knockback", "x5.0");
 			config.addDefault("Abilities.Air.Suffocate.Cooldown", 0);
 			config.addDefault("Abilities.Air.Suffocate.ChargeTime", 1000);
 			config.addDefault("Abilities.Air.Suffocate.Damage", 3);
@@ -1840,7 +1841,7 @@ public class ConfigManager {
 			config.addDefault("Abilities.Air.AirSweep.Damage", "x2.0");
 			config.addDefault("Abilities.Air.AirSweep.Cooldown", 0);
 			config.addDefault("Abilities.Air.AirSweep.Range", 21);
-			config.addDefault("Abilities.Air.AirSweep.Knockback", 4);
+			config.addDefault("Abilities.Air.AirSweep.Knockback", "x1.15");
 			config.addDefault("Abilities.Air.Twister.Range", "x1.5");
 			config.addDefault("Abilities.Air.Twister.Height", "+6");
 			config.addDefault("Abilities.Air.Twister.Cooldown", 0);
@@ -1997,9 +1998,23 @@ public class ConfigManager {
 			config.addDefault("Abilities.Water.WaterBubble.ClickDuration", "x10.0");
 			config.addDefault("Abilities.Water.WaterBubble.Speed", "x1.5");
 
+			// Force values used to be fixed numbers that replaced the normal value; they are multipliers now,
+			// so changing an ability's force also scales it in the Avatar State. Only untouched old defaults move.
+			replaceOldDefault(config, "Abilities.Air.AirShield.Knockback", 2.5, "x5.0");
+			replaceOldDefault(config, "Abilities.Air.AirSweep.Knockback", 4, "x1.15");
+			replaceOldDefault(config, "Abilities.Air.AirSuction.Push", 3.5, null); // never applied: AirSuction has no "Push" attribute
+
 			avatarStateConfig.save();
 		}
 
+	}
+
+	/** Replaces a saved value that still equals an old default (removes it if replacement is null). */
+	private static void replaceOldDefault(final FileConfiguration config, final String path, final double oldDefault, final Object replacement) {
+		final Object value = config.get(path);
+		if (value instanceof Number && ((Number) value).doubleValue() == oldDefault) {
+			config.set(path, replacement);
+		}
 	}
 
 	public static FileConfiguration getConfig() {

@@ -73,6 +73,7 @@ public class AttributeCache {
      * @param ability The ability to calculate the AvatarState modifier for
      */
     public void calculateAvatarStateModifier(CoreAbility ability) {
+        avatarStateModifier = Optional.empty();
         // If the ability is an AvatarAbility and requires the Avatar element, we don't want to apply the AvatarState modifier
         if (ability instanceof AvatarAbility && ((AvatarAbility) ability).requireAvatar()) return;
 

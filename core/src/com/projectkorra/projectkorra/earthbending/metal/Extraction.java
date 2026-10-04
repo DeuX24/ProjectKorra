@@ -65,6 +65,13 @@ public class Extraction extends MetalAbility {
 		return rand.nextInt(max) + min;
 	}
 
+	/** Puts the item straight into the player's inventory; whatever doesn't fit is dropped at their feet. */
+	private void give(final ItemStack item) {
+		for (final ItemStack leftover : this.player.getInventory().addItem(item).values()) {
+			this.player.getWorld().dropItem(this.player.getLocation(), leftover);
+		}
+	}
+
 	@Override
 	public String getName() {
 		return "Extraction";
@@ -78,7 +85,7 @@ public class Extraction extends MetalAbility {
 		Entity entity = GeneralMethods.getTargetedEntity(this.player, this.selectRange);
 
 		if (entity != null && entity.getType() == EntityType.IRON_GOLEM) {
-			player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.IRON_NUGGET, this.ironGolemDrops));
+			this.give(new ItemStack(Material.IRON_NUGGET, this.ironGolemDrops));
 			DamageHandler.damageEntity(entity, this.ironGolemDamage, this);
 
 			playMetalbendingSound(this.originBlock.getLocation());
@@ -140,7 +147,7 @@ public class Extraction extends MetalAbility {
 		}
 
 		this.originBlock.setType(type);
-		player.getWorld().dropItem(player.getLocation(), item);
+		this.give(item);
 
 		/*
 		 * Update the block from EarthAbility.getMovedEarth() to Stone otherwise

@@ -182,6 +182,7 @@ public class ConfigManager {
 			config.addDefault("Commands.Remove.Other.NoElements", "{target} has no elements to remove!");
 			config.addDefault("Commands.Remove.Other.NoElementsWithTemps", "{target} has no elements to remove, but they have temporary elements! Either specify the temp element to remove or use /b temp remove <player> all");
 
+			config.addDefault("Commands.Set.Description", "This command shows or changes an ability's config values, such as its force, range, cooldown or damage, and saves them. Use /bending set <ability> to list its options.");
 			config.addDefault("Commands.Reload.Description", "This command will reload the bending config files.");
 			config.addDefault("Commands.Reload.SuccessfullyReloaded", "Bending Config reloaded!");
 

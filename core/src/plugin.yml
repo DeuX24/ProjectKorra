@@ -18,6 +18,7 @@ permissions:
     children:
       bending.player: true
       bending.command.reload: true
+      bending.command.set: true
       bending.admin.permaremove: true
       bending.command.add.others: true
       bending.command.add: true

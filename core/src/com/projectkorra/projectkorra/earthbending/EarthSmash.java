@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -93,7 +95,7 @@ public class EarthSmash extends EarthAbility {
 		this.currentBlocks = new ArrayList<>();
 		this.affectedBlocks = new ArrayList<>();
 
-		if (type == ClickType.SHIFT_DOWN || type == ClickType.SHIFT_UP && !player.isSneaking()) {
+		if (type == ClickType.SHIFT_DOWN || type == ClickType.SHIFT_UP && !KeyBending.isSneaking(player)) {
 			final EarthSmash flySmash = flyingInSmashCheck(player);
 			if (flySmash != null) {
 				flySmash.state = State.FLYING;
@@ -123,7 +125,7 @@ public class EarthSmash extends EarthAbility {
 			}
 
 			this.start();
-		} else if (type == ClickType.LEFT_CLICK && player.isSneaking()) {
+		} else if (type == ClickType.LEFT_CLICK && KeyBending.isSneaking(player)) {
 			for (final EarthSmash smash : getAbilities(EarthSmash.class)) {
 				if (smash.state == State.GRABBED && smash.player == player) {
 					smash.state = State.SHOT;
@@ -132,7 +134,7 @@ public class EarthSmash extends EarthAbility {
 				}
 			}
 			return;
-		} else if (type == ClickType.RIGHT_CLICK && player.isSneaking()) {
+		} else if (type == ClickType.RIGHT_CLICK && KeyBending.isSneaking(player)) {
 			final EarthSmash grabbedSmash = this.aimingAtSmashCheck(player, State.GRABBED);
 			if (grabbedSmash != null) {
 				player.teleport(grabbedSmash.location.clone().add(0, 2, 0));
@@ -192,7 +194,7 @@ public class EarthSmash extends EarthAbility {
 		}
 
 		if (this.state == State.START && this.progressCounter > 1) {
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				if (System.currentTimeMillis() - this.getStartTime() >= this.chargeTime) {
 					this.origin = this.getEarthSourceBlock(this.selectRange);
 					if (this.origin == null) {
@@ -222,7 +224,7 @@ public class EarthSmash extends EarthAbility {
 				this.animateLift();
 			}
 		} else if (this.state == State.GRABBED) {
-			if (this.player.isSneaking()) {
+			if (KeyBending.isSneaking(this.player)) {
 				this.revert();
 				final Location oldLoc = this.location.clone();
 				this.location = this.player.getEyeLocation().add(this.player.getEyeLocation().getDirection().normalize().multiply(this.grabbedDistance));
@@ -273,7 +275,7 @@ public class EarthSmash extends EarthAbility {
 			}
 			return;
 		} else if (this.state == State.FLYING) {
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				this.remove();
 				return;
 			} else if (System.currentTimeMillis() - this.delay >= this.flightAnimationInterval) {

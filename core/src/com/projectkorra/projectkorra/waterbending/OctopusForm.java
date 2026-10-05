@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -119,7 +121,7 @@ public class OctopusForm extends WaterAbility {
 
 		this.time = System.currentTimeMillis();
 
-		if (!player.isSneaking()) {
+		if (!KeyBending.isSneaking(player)) {
 			recalculateAttributes(); //Apply night and avatarstate factors before checking the select range
 			this.sourceBlock = BlockSource.getWaterSourceBlock(player, this.selectRange, ClickType.LEFT_CLICK, true, true, this.bPlayer.canPlantbend());
 		}
@@ -225,7 +227,7 @@ public class OctopusForm extends WaterAbility {
 		if (!this.bPlayer.canBendIgnoreCooldowns(this)) {
 			this.remove();
 			return;
-		} else if (!this.player.isSneaking() && !this.sourceSelected) {
+		} else if (!KeyBending.isSneaking(this.player) && !this.sourceSelected) {
 			this.remove();
 			return;
 		} else if (this.sourceBlock.getLocation().distanceSquared(this.player.getLocation()) > this.selectRange * this.selectRange && this.sourceSelected) {

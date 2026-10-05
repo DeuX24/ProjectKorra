@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending.flight;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,7 +72,7 @@ public class FlightMultiAbility extends FlightAbility implements MultiAbility {
 
 		final FlightMultiAbility f = getAbility(player, FlightMultiAbility.class);
 		if (f != null) {
-			if (player.isSneaking()) {
+			if (KeyBending.isSneaking(player)) {
 				player.eject();
 				return;
 			}

@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending.lava;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +135,7 @@ public class LavaFlow extends LavaAbility {
 		if (type == AbilityType.SHIFT) {
 			// Update the shift counter for all the player's LavaFlows.
 			final ArrayList<LavaFlow> shiftFlows = LavaFlow.getLavaFlow(player, LavaFlow.AbilityType.SHIFT);
-			if (shiftFlows.size() > 0 && !player.isSneaking()) {
+			if (shiftFlows.size() > 0 && !KeyBending.isSneaking(player)) {
 				for (final LavaFlow lavaFlow : shiftFlows) {
 					lavaFlow.shiftCounter++;
 				}
@@ -189,7 +191,7 @@ public class LavaFlow extends LavaAbility {
 				this.removeSlowly();
 				return;
 			}
-			if (!this.player.isSneaking() && !this.removing) {
+			if (!KeyBending.isSneaking(this.player) && !this.removing) {
 				if (this.affectedBlocks.size() > 0) {
 					this.removeOnDelay();
 					this.removing = true;

@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending.blood;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -184,7 +186,7 @@ public class Bloodbending extends BloodAbility {
 	public void progress() {
 		final PotionEffect effect = new PotionEffect(PotionEffectType.SLOWNESS, 60, 1);
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			bPlayer.addCooldown(this);
 			this.remove();
 			return;

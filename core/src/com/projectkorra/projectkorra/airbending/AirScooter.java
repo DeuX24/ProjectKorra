@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -138,7 +140,7 @@ public class AirScooter extends AirAbility {
 			return;
 		}
 
-		if (this.player.isSneaking()) {
+		if (KeyBending.isSneaking(this.player)) {
 			this.bPlayer.addCooldown(this);
 			this.remove();
 			return;

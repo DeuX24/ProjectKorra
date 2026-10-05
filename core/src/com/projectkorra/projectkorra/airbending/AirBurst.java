@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +86,7 @@ public class AirBurst extends AirAbility {
 			this.isCharged = true;
 		}
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			if (this.isCharged) {
 				this.bPlayer.addCooldown(this);
 				this.sphereBurst();

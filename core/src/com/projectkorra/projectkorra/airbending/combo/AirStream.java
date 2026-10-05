@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending.combo;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 
 import com.projectkorra.projectkorra.ability.util.ComboUtil;
@@ -106,7 +108,7 @@ public class AirStream extends AirAbility implements ComboAbility {
 		if (this.player.getWorld() != this.currentLoc.getWorld()) {
 			this.remove();
 			return;
-		} else if (!this.player.isSneaking()) {
+		} else if (!KeyBending.isSneaking(this.player)) {
 			this.remove();
 			return;
 		} else if (this.player.getWorld().equals(this.currentLoc.getWorld()) && Math.abs(this.player.getLocation().distanceSquared(this.currentLoc)) > this.range * this.range) {

@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.firebending.lightning;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -436,7 +438,7 @@ public class Lightning extends LightningAbility {
 			}
 
 			if (this.charged) {
-				if (this.player.isSneaking()) {
+				if (KeyBending.isSneaking(this.player)) {
 					final Location loc = this.player.getEyeLocation().add(this.player.getEyeLocation().getDirection().normalize().multiply(1.2));
 					loc.add(0, 0.3, 0);
 					playLightningbendingParticle(loc, 0.2F, 0.2F, 0.2F);
@@ -476,7 +478,7 @@ public class Lightning extends LightningAbility {
 					}
 				}
 			} else {
-				if (!this.player.isSneaking()) {
+				if (!KeyBending.isSneaking(this.player)) {
 					this.remove();
 					return;
 				}

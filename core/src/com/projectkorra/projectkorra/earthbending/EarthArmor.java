@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -577,7 +579,7 @@ public class EarthArmor extends EarthAbility {
 	}
 
 	public void click() {
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			return;
 		}
 

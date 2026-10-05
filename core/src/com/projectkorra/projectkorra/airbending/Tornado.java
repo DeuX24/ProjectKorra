@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
@@ -81,7 +83,7 @@ public class Tornado extends AirAbility {
 
 	@Override
 	public void progress() {
-		if (this.player.getEyeLocation().getBlock().isLiquid() || !this.player.isSneaking() || !this.bPlayer.canBend(this)) {
+		if (this.player.getEyeLocation().getBlock().isLiquid() || !KeyBending.isSneaking(this.player) || !this.bPlayer.canBend(this)) {
 			this.bPlayer.addCooldown(this);
 			this.remove();
 			return;

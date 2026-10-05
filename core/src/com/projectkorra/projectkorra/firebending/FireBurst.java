@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.firebending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,7 +125,7 @@ public class FireBurst extends FireAbility {
 			this.charged = true;
 		}
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			if (this.charged) {
 				this.sphereBurst();
 			} else {

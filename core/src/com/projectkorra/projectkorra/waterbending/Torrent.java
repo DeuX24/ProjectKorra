@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -193,7 +195,7 @@ public class Torrent extends WaterAbility {
 					return;
 				}
 
-				if (this.player.isSneaking()) {
+				if (KeyBending.isSneaking(this.player)) {
 					this.sourceSelected = false;
 					this.settingUp = true;
 
@@ -225,7 +227,7 @@ public class Torrent extends WaterAbility {
 			}
 
 			if (this.settingUp) {
-				if (!this.player.isSneaking()) {
+				if (!KeyBending.isSneaking(this.player)) {
 					this.location = this.source.getLocation();
 					this.remove();
 					return;
@@ -273,7 +275,7 @@ public class Torrent extends WaterAbility {
 					this.source = new TempBlock(this.location.getBlock(), isCauldron(this.location.getBlock()) ? this.location.getBlock().getBlockData() : Material.WATER.createBlockData());
 				}
 			}
-			if (this.forming && !this.player.isSneaking()) {
+			if (this.forming && !KeyBending.isSneaking(this.player)) {
 				this.location = this.player.getEyeLocation().add(this.radius, 0, 0);
 				this.remove();
 				return;
@@ -310,7 +312,7 @@ public class Torrent extends WaterAbility {
 
 			}
 
-			if (this.formed && !this.player.isSneaking() && !this.launch) {
+			if (this.formed && !KeyBending.isSneaking(this.player) && !this.launch) {
 				new TorrentWave(this.player, this.radius);
 				this.remove();
 				return;
@@ -328,7 +330,7 @@ public class Torrent extends WaterAbility {
 			}
 
 			if (this.launching) {
-				if (!this.player.isSneaking()) {
+				if (!KeyBending.isSneaking(this.player)) {
 					this.remove();
 					return;
 				}

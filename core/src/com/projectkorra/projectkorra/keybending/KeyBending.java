@@ -2,6 +2,7 @@ package com.projectkorra.projectkorra.keybending;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -18,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.PKListener;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 
@@ -33,15 +35,23 @@ import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
  * Messages on {@value #CHANNEL} are plain UTF-8 text:
  * <ul>
  * <li>{@code hello}: switch to key mode (the server answers {@code ok})</li>
- * <li>{@code select:<Ability>}: select an ability (sent before the mod sneaks for a held key)</li>
- * <li>{@code click:<Ability>}: select an ability and do its left-click action</li>
+ * <li>{@code click:<Ability>}: tap: select an ability and do its left-click action</li>
+ * <li>{@code sneakdown:<Ability>} / {@code sneakup:<Ability>}: a held key: select an ability and start /
+ * end a virtual sneak with it, without the player actually crouching</li>
+ * <li>{@code shift:<Ability>}: Shift + key: select an ability and do a quick sneak (start and end)</li>
+ * <li>{@code select:<Ability>}: only select an ability</li>
  * </ul>
+ * In key mode a real left-click and a real Shift no longer do ability actions (Shift is just crouching;
+ * passives such as FastSwim still work). Abilities that keep checking whether the player is sneaking use
+ * {@link #isSneaking(Player)}: a held key or real crouching.
  */
 public final class KeyBending implements PluginMessageListener, Listener {
 
 	public static final String CHANNEL = "projectkorra:keys";
 
 	private static final Map<UUID, String> SELECTED = new ConcurrentHashMap<>();
+	/** Players holding an ability key: they count as sneaking for bending. */
+	private static final Set<UUID> VIRTUAL_SNEAK = ConcurrentHashMap.newKeySet();
 	private static boolean simulatingClick;
 
 	private final JavaPlugin plugin;
@@ -74,6 +84,19 @@ public final class KeyBending implements PluginMessageListener, Listener {
 		return selected;
 	}
 
+	/**
+	 * Whether this sneak toggle should skip ability sneak actions: in key mode only the mod's keys do them
+	 * (a real Shift would use whatever ability was selected last). Passives still run.
+	 */
+	public static boolean ignoresRealSneak(final Player player, final boolean sneaking) {
+		return getSelected(player) != null;
+	}
+
+	/** Whether the player counts as sneaking for bending: really crouching, or holding an ability key. */
+	public static boolean isSneaking(final Player player) {
+		return player.isSneaking() || (VIRTUAL_SNEAK.contains(player.getUniqueId()) && getSelected(player) != null);
+	}
+
 	/** Whether a real left-click should be ignored for bending (key mode, outside a key's click). */
 	public static boolean ignoresRealClick(final Player player) {
 		return !simulatingClick && getSelected(player) != null;
@@ -102,6 +125,23 @@ public final class KeyBending implements PluginMessageListener, Listener {
 		}
 		SELECTED.put(player.getUniqueId(), ability.getName());
 
+		// Like a real sneak: the action sees the state from before the toggle, then the state changes.
+		switch (command) {
+			case "sneakdown" -> {
+				PKListener.handleSneak(player, false, true);
+				VIRTUAL_SNEAK.add(player.getUniqueId());
+			}
+			case "sneakup" -> {
+				PKListener.handleSneak(player, true, true);
+				VIRTUAL_SNEAK.remove(player.getUniqueId());
+			}
+			case "shift" -> {
+				PKListener.handleSneak(player, false, true);
+				PKListener.handleSneak(player, true, true);
+			}
+			default -> { }
+		}
+
 		if (command.equals("click")) {
 			// Exactly what a real left-click does, so all the usual checks (chi-block, bloodbending, ...) apply.
 			simulatingClick = true;
@@ -118,5 +158,6 @@ public final class KeyBending implements PluginMessageListener, Listener {
 	@EventHandler
 	public void onQuit(final PlayerQuitEvent event) {
 		SELECTED.remove(event.getPlayer().getUniqueId());
+		VIRTUAL_SNEAK.remove(event.getPlayer().getUniqueId());
 	}
 }

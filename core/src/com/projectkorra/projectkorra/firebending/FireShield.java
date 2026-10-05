@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.firebending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -105,7 +107,7 @@ public class FireShield extends FireAbility {
 			this.bPlayer.addCooldown(this);
 			this.remove();
 			return;
-		} else if ((!this.player.isSneaking() && this.shield) || (System.currentTimeMillis() > this.getStartTime() + this.shieldDuration && this.shield && this.shieldDuration > 0)) {
+		} else if ((!KeyBending.isSneaking(this.player) && this.shield) || (System.currentTimeMillis() > this.getStartTime() + this.shieldDuration && this.shield && this.shieldDuration > 0)) {
 			this.bPlayer.addCooldown(this);
 			this.remove();
 			return;

@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -92,7 +94,7 @@ public class Catapult extends EarthAbility {
 		this.bentBlockData = b.getBlockData();
 
 		if (this.charging) {
-			if (this.stage == 4 || !this.player.isSneaking()) {
+			if (this.stage == 4 || !KeyBending.isSneaking(this.player)) {
 				this.charging = false;
 			} else {
 				if ((System.currentTimeMillis() - this.stageStart) >= ((Math.max(0, this.stageTimeMult * (this.stage - 1))) * 1000)) {

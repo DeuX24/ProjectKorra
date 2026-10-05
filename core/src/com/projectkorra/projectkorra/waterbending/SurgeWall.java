@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,7 +104,7 @@ public class SurgeWall extends WaterAbility {
 			return;
 		}
 
-		if (this.bPlayer.isOnCooldown("SurgeWave") || player.isSneaking()) {
+		if (this.bPlayer.isOnCooldown("SurgeWave") || KeyBending.isSneaking(player)) {
 			return;
 		} else if (wall == null && WaterReturn.hasWaterBottle(player)) {
 			final Location eyeLoc = player.getEyeLocation();
@@ -263,7 +265,7 @@ public class SurgeWall extends WaterAbility {
 			if (!this.progressing && !matchesName) {
 				this.remove();
 				return;
-			} else if (this.progressing && (!this.player.isSneaking() || !matchesName)) {
+			} else if (this.progressing && (!KeyBending.isSneaking(this.player) || !matchesName)) {
 				this.remove();
 				return;
 			} else if (!this.progressing) {

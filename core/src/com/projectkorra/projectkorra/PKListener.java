@@ -1279,17 +1279,31 @@ public class PKListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerSneak(final PlayerToggleSneakEvent event) {
 		final Player player = event.getPlayer();
+		final boolean sneaking = player.isSneaking(); // still the state before this toggle
+		// With key bending, only the mod's keys do ability sneak actions; a real Shift still runs passives.
+		if (handleSneak(player, sneaking, !KeyBending.ignoresRealSneak(player, sneaking))) {
+			event.setCancelled(true);
+		}
+	}
+
+	/**
+	 * The bending side of sneaking: combos and the bound ability's sneak action.
+	 *
+	 * @param sneaking whether the player was sneaking before this toggle (false = starting to sneak)
+	 * @param abilities whether combos and the bound ability's sneak action apply (passives always do)
+	 * @return whether the toggle should be cancelled
+	 */
+	public static boolean handleSneak(final Player player, final boolean sneaking, final boolean abilities) {
 		if (BendingPlayer.isWorldDisabled(player.getWorld())) {
-			return;
+			return false;
 		}
 
 		final BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 		if (bPlayer == null) {
-			return;
+			return false;
 		}
 
-		final boolean sneaking = player.isSneaking();
-		if (bPlayer.canCurrentlyBendWithWeapons()) {
+		if (abilities && bPlayer.canCurrentlyBendWithWeapons()) {
 			ComboManager.addComboAbility(player, sneaking ? ClickType.SHIFT_UP : ClickType.SHIFT_DOWN);
 		}
 
@@ -1297,20 +1311,17 @@ public class PKListener implements Listener {
 		if (!sneaking && Suffocate.isBreathbent(player)) {
 			if (!(abilityName.equalsIgnoreCase("AirSwipe") || abilityName.equalsIgnoreCase("FireBlast")
 					|| abilityName.equalsIgnoreCase("EarthBlast") || abilityName.equalsIgnoreCase("WaterManipulation"))) {
-				event.setCancelled(true);
-				return;
+				return true;
 			}
 		}
 
 		if (!sneaking && (MovementHandler.isStopped(player) || Bloodbending.isBloodbent(player))) {
-			event.setCancelled(true);
-			return;
+			return true;
 		} else if (bPlayer.isChiBlocked()) {
-			event.setCancelled(true);
-			return;
+			return true;
 		}
 
-		if (!sneaking) {
+		if (!sneaking && abilities) {
 			BlockSource.update(player, ClickType.SHIFT_DOWN);
 		}
 
@@ -1324,9 +1335,9 @@ public class PKListener implements Listener {
 			}
 		}
 
-		if (ability == null || ability instanceof AddonAbility || sneaking || !bPlayer.canBendIgnoreCooldowns(ability)
+		if (!abilities || ability == null || ability instanceof AddonAbility || sneaking || !bPlayer.canBendIgnoreCooldowns(ability)
 				|| !bPlayer.canCurrentlyBendWithWeapons() || !bPlayer.isElementToggled(ability.getElement())) {
-			return;
+			return false;
 		}
 
 		switch(ability) {
@@ -1404,6 +1415,7 @@ public class PKListener implements Listener {
 			case FireManipulation ignored -> new FireManipulation(player, FireManipulationType.SHIFT);
 			default -> {}
 		}
+		return false;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)

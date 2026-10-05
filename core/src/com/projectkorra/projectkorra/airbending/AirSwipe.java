@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -285,7 +287,7 @@ public class AirSwipe extends AirAbility {
 			}
 			this.advanceSwipe();
 		} else {
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				double factor = 1;
 				if (System.currentTimeMillis() >= this.getStartTime() + this.maxChargeTime) {
 					factor = this.maxChargeFactor;

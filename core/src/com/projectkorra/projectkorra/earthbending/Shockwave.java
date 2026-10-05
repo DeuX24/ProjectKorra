@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -66,7 +68,7 @@ public class Shockwave extends EarthAbility {
 			this.charged = true;
 		}
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			if (this.charged) {
 				this.areaShockwave();
 				this.remove();

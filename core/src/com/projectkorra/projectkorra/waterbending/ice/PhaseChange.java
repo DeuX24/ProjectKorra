@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending.ice;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +116,7 @@ public class PhaseChange extends IceAbility {
 		}
 
 		if (this.active_types.contains(PhaseChangeType.MELT)) {
-			if (!this.player.isSneaking() || !this.bPlayer.canBend(this)) {
+			if (!KeyBending.isSneaking(this.player) || !this.bPlayer.canBend(this)) {
 				this.active_types.remove(PhaseChangeType.MELT);
 				this.bPlayer.addCooldown("PhaseChangeMelt", this.meltCooldown);
 				this.meltRadius = 1;

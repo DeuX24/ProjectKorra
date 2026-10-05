@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -91,7 +93,7 @@ public class WaterBubble extends WaterAbility {
 
 	@Override
 	public void progress() {
-		if (!this.bPlayer.canBend(this) || (this.isShift && !this.player.isSneaking()) || !this.location.getWorld().equals(this.player.getWorld())) {
+		if (!this.bPlayer.canBend(this) || (this.isShift && !KeyBending.isSneaking(this.player)) || !this.location.getWorld().equals(this.player.getWorld())) {
 			this.removing = true;
 		}
 

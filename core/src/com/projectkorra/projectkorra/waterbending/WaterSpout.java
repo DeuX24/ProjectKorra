@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +104,7 @@ public class WaterSpout extends WaterAbility {
 	}
 
 	private void hop() {
-		if (player.isSneaking() && !bPlayer.isOnCooldown("SpoutHop") && canSpoutHop) {
+		if (KeyBending.isSneaking(player) && !bPlayer.isOnCooldown("SpoutHop") && canSpoutHop) {
 			Vector push = player.getEyeLocation().getDirection().multiply(spoutHopPower);
 			GeneralMethods.setVelocity(this, player, push);
 			bPlayer.addCooldown("SpoutHop", spoutHopCooldown);

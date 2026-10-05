@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending.lava;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import com.projectkorra.projectkorra.attribute.Attribute;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -147,7 +149,7 @@ public class LavaSurgeWall extends LavaAbility {
 
 		if (System.currentTimeMillis() - this.time >= this.interval) {
 			this.time = System.currentTimeMillis();
-			if (this.progressing && !this.player.isSneaking()) {
+			if (this.progressing && !KeyBending.isSneaking(this.player)) {
 				this.remove();
 				return;
 			}

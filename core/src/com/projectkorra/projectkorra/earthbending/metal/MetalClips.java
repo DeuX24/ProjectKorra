@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending.metal;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -235,11 +237,11 @@ public class MetalClips extends MetalAbility {
 			}
 		}
 
-		if (this.player.isSneaking()) {
+		if (KeyBending.isSneaking(this.player)) {
 			this.hasSnuck = true;
 		}
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			if (this.isMagnetized) {
 				this.bPlayer.addCooldown("MetalClips Magnet", this.magnetCooldown);
 				this.remove();
@@ -335,7 +337,7 @@ public class MetalClips extends MetalAbility {
 			return;
 		}
 
-		if (this.isControlling && this.player.isSneaking()) {
+		if (this.isControlling && KeyBending.isSneaking(this.player)) {
 			if (this.metalClipsCount == 1) {
 				final Location oldLocation = this.targetEntity.getLocation();
 				Location loc = oldLocation;
@@ -471,7 +473,7 @@ public class MetalClips extends MetalAbility {
 
 	public static boolean isControllingEntity(final Player player) {
 		final MetalClips clips = getAbility(player, MetalClips.class);
-		return clips != null && player.isSneaking() && clips.targetEntity != null;
+		return clips != null && KeyBending.isSneaking(player) && clips.targetEntity != null;
 	}
 
 	public static Map<Entity, Integer> getEntityClipsCount() {

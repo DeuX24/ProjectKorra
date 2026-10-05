@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
@@ -110,7 +112,7 @@ public class AirShield extends AirAbility {
 			this.remove();
 			return;
 		} else if (!this.bPlayer.isAvatarState() || !this.isToggledByAvatarState) {
-			if (!this.player.isSneaking() || !this.bPlayer.canBend(this)) {
+			if (!KeyBending.isSneaking(this.player) || !this.bPlayer.canBend(this)) {
 				if (this.dynamicCooldown) {
 					Long reducedCooldown = this.cooldown - (this.duration - (System.currentTimeMillis() - this.getStartTime()));
 					if (reducedCooldown < 0L) {

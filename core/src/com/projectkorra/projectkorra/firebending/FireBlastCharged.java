@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.firebending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -254,7 +256,7 @@ public class FireBlastCharged extends FireAbility {
 		} else if (!this.bPlayer.canBendIgnoreCooldowns(CoreAbility.getAbility("FireBlast")) && !this.launched) {
 			this.remove();
 			return;
-		} else if (!this.player.isSneaking() && !this.charged) {
+		} else if (!KeyBending.isSneaking(this.player) && !this.charged) {
 			this.remove();
 			return;
 		}
@@ -262,7 +264,7 @@ public class FireBlastCharged extends FireAbility {
 		if (System.currentTimeMillis() > this.getStartTime() + this.chargeTime) {
 			this.charged = true;
 		}
-		if (!this.player.isSneaking() && !this.launched) {
+		if (!KeyBending.isSneaking(this.player) && !this.launched) {
 			this.launched = true;
 			this.location = this.player.getEyeLocation();
 			this.origin = this.location.clone();

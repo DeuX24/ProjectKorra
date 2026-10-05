@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.firebending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -160,7 +162,7 @@ public class HeatControl extends FireAbility {
 
 		if (this.heatControlType == HeatControlType.COOK) {
 
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				this.remove();
 				return;
 			}
@@ -180,7 +182,7 @@ public class HeatControl extends FireAbility {
 
 		} else if (this.heatControlType == HeatControlType.EXTINGUISH) {
 
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				this.bPlayer.addCooldown(this.getName() + "Extinguish", this.extinguishCooldown);
 				this.remove();
 				return;
@@ -211,7 +213,7 @@ public class HeatControl extends FireAbility {
 				return;
 			}
 
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				this.remove();
 				return;
 			}

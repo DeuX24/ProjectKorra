@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending.passive;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.HashSet;
 
 import org.bukkit.Location;
@@ -27,7 +29,7 @@ public class FerroControl extends MetalAbility implements PassiveAbility {
 
 	@Override
 	public void progress() {
-		if (!this.player.isSneaking() || !this.bPlayer.canUsePassive(this) || !this.bPlayer.canBendPassive(this)) {
+		if (!KeyBending.isSneaking(this.player) || !this.bPlayer.canUsePassive(this) || !this.bPlayer.canBendPassive(this)) {
 			this.remove();
 			return;
 		}

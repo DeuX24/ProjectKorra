@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending.combo;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -210,7 +212,7 @@ public class IceBullet extends IceAbility implements ComboAbility {
 			return;
 		}
 
-		if (this.shots > this.maxShots || !this.player.isSneaking()) {
+		if (this.shots > this.maxShots || !KeyBending.isSneaking(this.player)) {
 			this.remove();
 			return;
 		}

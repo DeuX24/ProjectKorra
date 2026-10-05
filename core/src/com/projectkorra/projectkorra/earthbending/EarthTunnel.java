@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -91,7 +93,7 @@ public class EarthTunnel extends EarthAbility {
 		if (System.currentTimeMillis() - this.time >= this.interval) {
 			this.time = System.currentTimeMillis();
 			for (int i = 1; i <= this.blocksPerInterval; i++) {
-				if (Math.abs(Math.toDegrees(this.player.getEyeLocation().getDirection().angle(this.direction))) > 20 || !this.player.isSneaking()) {
+				if (Math.abs(Math.toDegrees(this.player.getEyeLocation().getDirection().angle(this.direction))) > 20 || !KeyBending.isSneaking(this.player)) {
 					this.bPlayer.addCooldown(this);
 					this.remove();
 					return;

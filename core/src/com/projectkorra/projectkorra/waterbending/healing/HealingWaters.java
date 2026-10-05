@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending.healing;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AirAbility;
 import com.projectkorra.projectkorra.ability.ElementalAbility;
@@ -111,7 +113,7 @@ public class HealingWaters extends HealingAbility {
 			}
 		}
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			this.bPlayer.addCooldown(this);
 			this.remove();
 			return;

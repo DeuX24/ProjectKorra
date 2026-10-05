@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.earthbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -276,7 +278,7 @@ public class EarthGrab extends EarthAbility {
 			return;
 		}
 
-		if (!this.player.isSneaking()) {
+		if (!KeyBending.isSneaking(this.player)) {
 			this.remove();
 			return;
 		}

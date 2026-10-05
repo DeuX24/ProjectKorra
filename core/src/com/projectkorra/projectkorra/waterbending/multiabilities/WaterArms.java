@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending.multiabilities;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.ElementalAbility;
@@ -101,7 +103,7 @@ public class WaterArms extends WaterAbility {
 		final WaterArms oldArms = getAbility(player, WaterArms.class);
 
 		if (oldArms != null) {
-			if (player.isSneaking()) {
+			if (KeyBending.isSneaking(player)) {
 				oldArms.prepareCancel();
 			} else {
 				switch (player.getInventory().getHeldItemSlot()) {

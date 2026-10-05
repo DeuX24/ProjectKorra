@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.airbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.AirAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
@@ -159,7 +161,7 @@ public class AirBreath extends AirAbility {
 
     private boolean shouldRemoveWithCooldown() {
         return !bPlayer.canBend(this)
-                || !player.isSneaking()
+                || !KeyBending.isSneaking(player)
                 || hasExpired()
                 || isInvalidEffectLocation(getMouthLocation());
     }

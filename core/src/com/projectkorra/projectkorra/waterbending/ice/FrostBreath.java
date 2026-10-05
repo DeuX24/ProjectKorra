@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending.ice;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.CoreAbility;
@@ -225,7 +227,7 @@ public class FrostBreath extends IceAbility implements SubAbility {
 
     @Override
     public void progress() {
-        if (!player.isSneaking() || !player.isOnline() || !bPlayer.canBend(this) || breathDuration + getStartTime() < System.currentTimeMillis()) {
+        if (!KeyBending.isSneaking(player) || !player.isOnline() || !bPlayer.canBend(this) || breathDuration + getStartTime() < System.currentTimeMillis()) {
             remove();
             bPlayer.addCooldown(this);
             return;

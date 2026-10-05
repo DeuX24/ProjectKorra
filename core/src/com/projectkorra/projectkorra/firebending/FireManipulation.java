@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.firebending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +110,7 @@ public class FireManipulation extends FireAbility {
 		}
 
 		if (!this.firing && !this.charging) {
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				this.bPlayer.addCooldown(this, this.shieldCooldown);
 				this.remove();
 				return;
@@ -139,7 +141,7 @@ public class FireManipulation extends FireAbility {
 				}
 			}
 		} else if (!this.firing && this.charging) {
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				this.bPlayer.addCooldown(this, this.streamCooldown);
 				this.remove();
 				return;
@@ -163,7 +165,7 @@ public class FireManipulation extends FireAbility {
 			}
 		} else {
 			Vector direction = this.player.getLocation().getDirection().clone();
-			if (this.streamSneaking && !this.player.isSneaking()) {
+			if (this.streamSneaking && !KeyBending.isSneaking(this.player)) {
 				this.streamSneaking = false;
 				this.streamRemoveTime = System.currentTimeMillis();
 				this.streamSneakDirection = direction;

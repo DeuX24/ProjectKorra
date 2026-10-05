@@ -1,5 +1,7 @@
 package com.projectkorra.projectkorra.waterbending;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
@@ -187,7 +189,7 @@ public class WaterSpoutWave extends WaterAbility {
 			if (this.player.getLocation().distanceSquared(this.origin) > this.selectRange * this.selectRange || !isWaterbendable(this.sourceBlock)) {
 				this.remove();
 				return;
-			} else if (this.player.isSneaking()) {
+			} else if (KeyBending.isSneaking(this.player)) {
 				this.setType(AbilityType.SHIFT);
 				return;
 			}
@@ -227,7 +229,7 @@ public class WaterSpoutWave extends WaterAbility {
 			}
 
 			this.removeOldType(this.player, AbilityType.CLICK);
-			if (!this.player.isSneaking()) {
+			if (!KeyBending.isSneaking(this.player)) {
 				if (System.currentTimeMillis() - this.time > this.chargeTime) {
 					this.setType(AbilityType.RELEASE);
 					this.setAnimation(AnimateState.SHRINK);
@@ -287,7 +289,7 @@ public class WaterSpoutWave extends WaterAbility {
 			} else {
 				this.moving = true;
 				this.collidable = true;
-				if ((System.currentTimeMillis() - this.time > this.flightDuration) || this.player.isSneaking()) {
+				if ((System.currentTimeMillis() - this.time > this.flightDuration) || KeyBending.isSneaking(this.player)) {
 					this.remove();
 					return;
 				}

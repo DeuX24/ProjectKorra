@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import com.projectkorra.projectkorra.keybending.KeyBending;
+import com.projectkorra.projectkorra.keybending.PassiveToggles;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.projectkorra.projectkorra.ability.StanceAbility;
 import com.projectkorra.projectkorra.board.BendingBoard;
@@ -208,6 +209,9 @@ public class BendingPlayer extends OfflineBendingPlayer {
 	public boolean canBendPassive(final CoreAbility ability) {
 		if (ability == null || !this.isPassiveToggled(ability.getElement()) || !this.isToggledPassives()) {
 			return false; // If the passive is disabled.
+		}
+		if (PassiveToggles.isDisabled(this.player, ability)) {
+			return false; // switched off individually
 		}
 		final Element element = ability.getElement();
 		if (Commands.isToggledForAll && ConfigManager.defaultConfig.get().getBoolean("Properties.TogglePassivesWithAllBending")) {

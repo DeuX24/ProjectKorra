@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.projectkorra.projectkorra.keybending.PassiveToggles;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import org.bukkit.entity.Player;
 
@@ -83,6 +84,8 @@ public class PassiveManager {
 			return false;
 		} else if (!bPlayer.isToggledPassives()) {
 			return false;
+		} else if (PassiveToggles.isDisabled(player, passive)) {
+			return false; // switched off individually
 		}
 		return true;
 	}

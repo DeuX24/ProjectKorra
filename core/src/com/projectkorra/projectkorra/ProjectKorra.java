@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.logging.Logger;
 
 import com.djrapitops.plan.extension.ExtensionService;
+import com.projectkorra.projectkorra.keybending.KeyBending;
 import com.projectkorra.projectkorra.hooks.PlanExtension;
 import com.projectkorra.projectkorra.region.RegionProtection;
 import org.bukkit.Bukkit;
@@ -77,6 +78,7 @@ public class ProjectKorra extends JavaPlugin {
 		BendingPlayer.DISABLED_WORLDS = new HashSet<>(ConfigManager.defaultConfig.get().getStringList("Properties.DisabledWorlds"));
 
 		this.getServer().getPluginManager().registerEvents(new PKListener(), this);
+		KeyBending.register(this);
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BendingManager(), 0, 1);
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AirbendingManager(this), 0, 1);
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new WaterbendingManager(this), 0, 1);

@@ -1,6 +1,7 @@
 package com.projectkorra.projectkorra;
 
 import com.bekvon.bukkit.residence.commands.message;
+import com.projectkorra.projectkorra.keybending.KeyBending;
 import com.projectkorra.projectkorra.airbending.AirBreath;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1456,8 +1457,8 @@ public class PKListener implements Listener {
 		}
 
 		final BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-		if (bPlayer == null) {
-			return;
+		if (bPlayer == null || KeyBending.ignoresRealClick(player)) {
+			return; // with key bending, only the mod's keys do click actions
 		}
 
 		final Entity target = GeneralMethods.getTargetedEntity(player, 3);

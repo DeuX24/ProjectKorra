@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import com.projectkorra.projectkorra.keybending.KeyBending;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.projectkorra.projectkorra.ability.StanceAbility;
 import com.projectkorra.projectkorra.board.BendingBoard;
@@ -403,6 +404,12 @@ public class BendingPlayer extends OfflineBendingPlayer {
 	@Override
 	public void uncacheAfter(long time) throws IllegalStateException {
 		throw new IllegalStateException("Cannot uncache an online BendingPlayer!");
+	}
+
+	@Override
+	public String getBoundAbilityName() {
+		final String keySelected = KeyBending.getSelected(this.player);
+		return keySelected != null ? keySelected : super.getBoundAbilityName();
 	}
 
 	@Override

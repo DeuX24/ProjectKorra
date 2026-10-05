@@ -10,6 +10,7 @@ import com.projectkorra.projectkorra.util.TempBlock;
 import com.projectkorra.projectkorra.util.TempFallingBlock;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -83,15 +84,15 @@ public class BendingManager implements Runnable {
 						if (bPlayer == null) continue;
 
 						if (bPlayer.hasElement(Element.WATER) && player.hasPermission("bending.message.daymessage") && to != WorldTimeEvent.Time.NIGHT && from == WorldTimeEvent.Time.NIGHT) {
-							player.sendMessage(Element.WATER.getColor() + getMoonsetMessage());
+							sendTimeMessage(player, Element.WATER, getMoonsetMessage());
 						} else if (bPlayer.hasElement(Element.WATER) && player.hasPermission("bending.message.nightmessage") && to == WorldTimeEvent.Time.NIGHT) {
-							player.sendMessage(Element.WATER.getColor() + getMoonriseMessage());
+							sendTimeMessage(player, Element.WATER, getMoonriseMessage());
 						}
 
 						if (bPlayer.hasElement(Element.FIRE) && player.hasPermission("bending.message.nightmessage") && to != WorldTimeEvent.Time.DAY && from == WorldTimeEvent.Time.DAY) {
-							player.sendMessage(Element.FIRE.getColor() + getSunsetMessage());
+							sendTimeMessage(player, Element.FIRE, getSunsetMessage());
 						} else if (bPlayer.hasElement(Element.FIRE) && player.hasPermission("bending.message.daymessage") && to == WorldTimeEvent.Time.DAY) {
-							player.sendMessage(Element.FIRE.getColor() + getSunriseMessage());
+							sendTimeMessage(player, Element.FIRE, getSunriseMessage());
 						}
 					}
 				}
@@ -116,6 +117,13 @@ public class BendingManager implements Runnable {
 		TempFallingBlock.manage();
 
 		tempBlockRevertTask.run();
+	}
+
+	/** Sends a day/night message; an empty message in the language file turns it off. */
+	private static void sendTimeMessage(final Player player, final Element element, final String message) {
+		if (message != null && !ChatColor.stripColor(message).isBlank()) {
+			player.sendMessage(element.getColor() + message);
+		}
 	}
 
 	public static String getSunriseMessage() {

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.projectkorra.projectkorra.waterbending.OctopusForm;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -113,11 +114,12 @@ public final class KeyBending implements PluginMessageListener, Listener {
 	}
 
 	/**
-	 * Whether a real left-click should be ignored for bending (key mode, outside a key's click). This includes
-	 * multi-abilities such as Flight: their slot is picked with the hotbar, but only a key click uses it.
+	 * Whether a real left-click should be ignored for bending (key mode, outside a key's click). Real clicks
+	 * still work while a multi-ability (Flight, WaterArms) is active or OctopusForm is running, but once
+	 * those end a real click can't start an ability again.
 	 */
 	public static boolean ignoresRealClick(final Player player) {
-		return !simulatingClick && isKeyMode(player);
+		return !simulatingClick && getSelected(player) != null && !CoreAbility.hasAbility(player, OctopusForm.class);
 	}
 
 	@Override

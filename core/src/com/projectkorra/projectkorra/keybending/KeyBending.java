@@ -113,11 +113,20 @@ public final class KeyBending implements PluginMessageListener, Listener {
 	}
 
 	/**
-	 * Whether a real left-click should be ignored for bending (key mode, outside a key's click). This includes
-	 * multi-abilities such as Flight: their slot is picked with the hotbar, but only a key click uses it.
+	 * Whether a real left-click should be ignored for bending (key mode, outside a key's click). Real clicks
+	 * still work while a multi-ability (Flight, WaterArms) is bound or the selected ability is already running
+	 * (OctopusForm, EarthSmash, EarthGrab, ...), but a real click can't start an ability.
 	 */
 	public static boolean ignoresRealClick(final Player player) {
-		return !simulatingClick && isKeyMode(player);
+		if (simulatingClick) {
+			return false;
+		}
+		final String selected = getSelected(player);
+		if (selected == null) {
+			return false;
+		}
+		final CoreAbility ability = CoreAbility.getAbility(selected);
+		return ability == null || !CoreAbility.hasAbility(player, ability.getClass());
 	}
 
 	@Override

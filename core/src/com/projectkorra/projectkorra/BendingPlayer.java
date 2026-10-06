@@ -84,6 +84,7 @@ public class BendingPlayer extends OfflineBendingPlayer {
 		this.tremorSense = true;
 		this.illumination = true;
 		this.chiBlocked = false;
+		this.loadToggles();
 	}
 
 	public BendingPlayer(Player player) {
@@ -93,6 +94,51 @@ public class BendingPlayer extends OfflineBendingPlayer {
 		this.tremorSense = true;
 		this.illumination = true;
 		this.chiBlocked = false;
+		this.loadToggles();
+	}
+
+	private static final org.bukkit.NamespacedKey TOGGLES_KEY = new org.bukkit.NamespacedKey(ProjectKorra.plugin, "toggles");
+
+	/** Restores bending, all-passives, element and element-passive toggles saved with the player's data. */
+	private void loadToggles() {
+		if (this.player == null) {
+			return;
+		}
+		final String stored = this.player.getPersistentDataContainer().get(TOGGLES_KEY, org.bukkit.persistence.PersistentDataType.STRING);
+		if (stored == null) {
+			return;
+		}
+		this.toggledElements.clear();
+		this.toggledPassives.clear();
+		for (final String part : stored.split(";")) {
+			final int i = part.indexOf('=');
+			if (i < 0) {
+				continue;
+			}
+			final String key = part.substring(0, i), value = part.substring(i + 1);
+			if (key.equals("bending")) {
+				this.toggled = Boolean.parseBoolean(value);
+			} else if (key.equals("passives")) {
+				this.allPassivesToggled = Boolean.parseBoolean(value);
+			} else if (key.equals("elements") || key.equals("elementpassives")) {
+				for (final String name : value.split(",")) {
+					final Element e = name.isEmpty() ? null : Element.getElement(name);
+					if (e != null) {
+						(key.equals("elements") ? this.toggledElements : this.toggledPassives).add(e);
+					}
+				}
+			}
+		}
+	}
+
+	private void saveToggles() {
+		if (this.player == null) {
+			return;
+		}
+		final String value = "bending=" + this.toggled + ";passives=" + this.allPassivesToggled
+				+ ";elements=" + this.toggledElements.stream().map(Element::getName).collect(Collectors.joining(","))
+				+ ";elementpassives=" + this.toggledPassives.stream().map(Element::getName).collect(Collectors.joining(","));
+		this.player.getPersistentDataContainer().set(TOGGLES_KEY, org.bukkit.persistence.PersistentDataType.STRING, value);
 	}
 
 	/**
@@ -656,24 +702,28 @@ public class BendingPlayer extends OfflineBendingPlayer {
 	@Override
 	public void toggleBending() {
 		this.toggled = !this.toggled;
+		this.saveToggles();
 		PassiveManager.registerPassives(this.player);
 	}
 
 	@Override
 	public void toggleAllPassives() {
 		this.allPassivesToggled = !this.allPassivesToggled;
+		this.saveToggles();
 		PassiveManager.registerPassives(this.player);
 	}
 
 	@Override
 	public void toggleElement(@NotNull final Element element) {
 		super.toggleElement(element);
+		this.saveToggles();
 		PassiveManager.registerPassives(this.player);
 	}
 
 	@Override
 	public void togglePassive(@NotNull final Element element) {
 		super.togglePassive(element);
+		this.saveToggles();
 		PassiveManager.registerPassives(this.player);
 	}
 

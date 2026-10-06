@@ -22,7 +22,23 @@ public class Commands {
 	public Commands(final ProjectKorra plugin) {
 		this.plugin = plugin;
 		debugEnabled = ProjectKorra.plugin.getConfig().getBoolean("debug");
+		isToggledForAll = new java.io.File(ProjectKorra.plugin.getDataFolder(), "bending-toggled-off-for-all").exists();
 		this.init();
+	}
+
+	/** Remembers /b toggle all across restarts: the marker file exists while bending is off for everyone. */
+	public static void saveToggledForAll() {
+		final java.io.File marker = new java.io.File(ProjectKorra.plugin.getDataFolder(), "bending-toggled-off-for-all");
+		try {
+			if (isToggledForAll) {
+				marker.getParentFile().mkdirs();
+				marker.createNewFile();
+			} else {
+				marker.delete();
+			}
+		} catch (final java.io.IOException e) {
+			ProjectKorra.log.warning("Could not save the bending toggle for all players: " + e.getMessage());
+		}
 	}
 
 	// Element Aliases.

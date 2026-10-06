@@ -3,6 +3,7 @@ package com.projectkorra.projectkorra.util;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
+import com.projectkorra.projectkorra.keybending.KeyBending;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -139,8 +140,8 @@ public class ChatUtil {
         }
 
         final BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-        if (bPlayer == null) {
-            return;
+        if (bPlayer == null || KeyBending.getSelected(player) != null) {
+            return; // key bending: the hotbar slot isn't the ability in use, so don't show it
         }
         String displayedMessage = bPlayer.getAbilities().get(slot);
         final CoreAbility ability = CoreAbility.getAbility(displayedMessage);

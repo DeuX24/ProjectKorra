@@ -91,6 +91,7 @@ public class ToggleCommand extends PKCommand {
 			if (toggleableParam.equals("all") && this.hasPermission(sender, "all")) { // bending toggle all.
 				if (Commands.isToggledForAll) { // Bending is toggled off for all players.
 					Commands.isToggledForAll = false;
+					Commands.saveToggledForAll();
 					for (final Player player : Bukkit.getOnlinePlayers()) {
 						ChatUtil.sendBrandingMessage(player, ChatColor.GREEN + this.toggleOnAll);
 					}
@@ -100,6 +101,7 @@ public class ToggleCommand extends PKCommand {
 
 				} else {
 					Commands.isToggledForAll = true;
+					Commands.saveToggledForAll();
 					for (final Player player : Bukkit.getOnlinePlayers()) {
 						ChatUtil.sendBrandingMessage(player, ChatColor.RED + this.toggleOffAll);
 					}

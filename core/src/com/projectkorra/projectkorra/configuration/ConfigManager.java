@@ -803,7 +803,6 @@ public class ConfigManager {
 			config.addDefault("Properties.RegionProtection.RespectRedProtect", true);
 			config.addDefault("Properties.RegionProtection.CacheBlockTime", 5000);
 
-			config.addDefault("Properties.Air.CanBendWithWeapons", false);
 			config.addDefault("Properties.Air.Particles", Particle.EFFECT.name());
 			config.addDefault("Properties.Air.PlaySound", true);
 			config.addDefault("Properties.Air.Sound.Sound", ((org.bukkit.Keyed) Sound.ENTITY_CREEPER_HURT).getKey().getKey());
@@ -813,7 +812,6 @@ public class ConfigManager {
 			config.addDefault("Properties.Water.DynamicSourcing", true);
 			config.addDefault("Properties.Water.FreezePlayerHead", true);
 			config.addDefault("Properties.Water.FreezePlayerFeet", true);
-			config.addDefault("Properties.Water.CanBendWithWeapons", true);
 			config.addDefault("Properties.Water.IceBlocks", iceBlocks);
 			config.addDefault("Properties.Water.PlantBlocks", plantBlocks);
 			config.addDefault("Properties.Water.SnowBlocks", snowBlocks);
@@ -837,7 +835,6 @@ public class ConfigManager {
 			config.addDefault("Properties.Earth.RevertEarthbending", true);
 			config.addDefault("Properties.Earth.SafeRevert", true);
 			config.addDefault("Properties.Earth.RevertCheckTime", 300000);
-			config.addDefault("Properties.Earth.CanBendWithWeapons", true);
 			config.addDefault("Properties.Earth.EarthBlocks", earthBlocks);
 			config.addDefault("Properties.Earth.MetalBlocks", metalBlocks);
 			config.addDefault("Properties.Earth.SandBlocks", sandBlocks);
@@ -859,7 +856,6 @@ public class ConfigManager {
 			config.addDefault("Properties.Earth.MudSound.Volume", 1);
 			config.addDefault("Properties.Earth.MudSound.Pitch", 1);
 
-			config.addDefault("Properties.Fire.CanBendWithWeapons", true);
 			config.addDefault("Properties.Fire.DayFactor", 1.25);
 			config.addDefault("Properties.Fire.PlaySound", true);
 			config.addDefault("Properties.Fire.FireGriefing", false);
@@ -886,7 +882,6 @@ public class ConfigManager {
 			config.addDefault("Properties.Fire.DynamicLight.Brightness", 13);
 			config.addDefault("Properties.Fire.DynamicLight.KeepAlive", 600);
 
-			config.addDefault("Properties.Chi.CanBendWithWeapons", true);
 
 			final ArrayList<String> disabledWorlds = new ArrayList<String>();
 			disabledWorlds.add("TestWorld");

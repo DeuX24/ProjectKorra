@@ -52,7 +52,7 @@ public class ComboManager {
 		}
 
 		final String abilityName = bPlayer.getBoundAbilityName();
-		if (abilityName == null) {
+		if (abilityName == null || abilityName.isEmpty()) {
 			return;
 		}
 

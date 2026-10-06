@@ -939,7 +939,7 @@ public class PKListener implements Listener {
             return;
         }
 
-		final boolean chi = bPLayer.canCurrentlyBendWithWeapons() && bPLayer.isElementToggled(Element.CHI);
+		final boolean chi = bPLayer.isElementToggled(Element.CHI);
         final CoreAbility ability = bPLayer.getBoundAbility();
         if (chi && ability instanceof ChiAbility && !bPLayer.isOnCooldown(ability) && bPLayer.canBendPassive(ability)) {
 			if (ability instanceof Paralyze) {
@@ -1030,7 +1030,7 @@ public class PKListener implements Listener {
 				Bukkit.getScheduler().runTaskLater(plugin, () -> RIGHT_CLICK_INTERACT.remove(uuid), 2L);
 			}
 
-			if (event.getHand() == EquipmentSlot.HAND && bPlayer.canCurrentlyBendWithWeapons()) {
+			if (event.getHand() == EquipmentSlot.HAND) {
 				ComboManager.addComboAbility(player, event.getClickedBlock() != null ? ClickType.RIGHT_CLICK_BLOCK : ClickType.RIGHT_CLICK);
 			}
 
@@ -1059,9 +1059,7 @@ public class PKListener implements Listener {
 			return;
 		}
 
-		if (bPlayer.canCurrentlyBendWithWeapons()) {
-			ComboManager.addComboAbility(player, ClickType.RIGHT_CLICK_ENTITY);
-		}
+		ComboManager.addComboAbility(player, ClickType.RIGHT_CLICK_ENTITY);
 
 		Entity rightClicked = event.getRightClicked();
 		if (rightClicked.hasMetadata("earthgrab:trap")) {
@@ -1303,7 +1301,7 @@ public class PKListener implements Listener {
 			return false;
 		}
 
-		if (abilities && bPlayer.canCurrentlyBendWithWeapons()) {
+		if (abilities) {
 			ComboManager.addComboAbility(player, sneaking ? ClickType.SHIFT_UP : ClickType.SHIFT_DOWN);
 		}
 
@@ -1336,7 +1334,7 @@ public class PKListener implements Listener {
 		}
 
 		if (!abilities || ability == null || ability instanceof AddonAbility || sneaking || !bPlayer.canBendIgnoreCooldowns(ability)
-				|| !bPlayer.canCurrentlyBendWithWeapons() || !bPlayer.isElementToggled(ability.getElement())) {
+				|| !bPlayer.isElementToggled(ability.getElement())) {
 			return false;
 		}
 
@@ -1474,9 +1472,7 @@ public class PKListener implements Listener {
 		}
 
 		final Entity target = GeneralMethods.getTargetedEntity(player, 3);
-		if (bPlayer.canCurrentlyBendWithWeapons()) {
-			ComboManager.addComboAbility(player, target instanceof LivingEntity && player != target ? ClickType.LEFT_CLICK_ENTITY : ClickType.LEFT_CLICK);
-		}
+		ComboManager.addComboAbility(player, target instanceof LivingEntity && player != target ? ClickType.LEFT_CLICK_ENTITY : ClickType.LEFT_CLICK);
 
 		if (Suffocate.isBreathbent(player)) {
 			event.setCancelled(true);
@@ -1523,7 +1519,7 @@ public class PKListener implements Listener {
 				}
 			}
 			return;
-		} else if (ability instanceof AddonAbility || !bPlayer.canBendIgnoreCooldowns(ability) || !bPlayer.canCurrentlyBendWithWeapons() || !bPlayer.isElementToggled(ability.getElement())) {
+		} else if (ability instanceof AddonAbility || !bPlayer.canBendIgnoreCooldowns(ability) || !bPlayer.isElementToggled(ability.getElement())) {
 			return;
 		}
 

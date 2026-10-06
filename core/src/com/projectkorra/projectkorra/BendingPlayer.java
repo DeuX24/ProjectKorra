@@ -242,15 +242,6 @@ public class BendingPlayer extends OfflineBendingPlayer {
 		} else return !RegionProtection.isRegionProtected(this.player, this.player.getLocation(), ability);
 	}
 
-	public boolean canCurrentlyBendWithWeapons() {
-        if (this.getBoundAbility() == null) {
-            return false;
-        }
-        final boolean hasWeapon = GeneralMethods.isWeapon(this.player.getInventory().getItemInMainHand().getType());
-        final boolean noWeaponElement = GeneralMethods.getElementsWithNoWeaponBending().contains(this.getBoundAbility().getElement());
-		return !hasWeapon || !noWeaponElement;
-    }
-
 	/**
 	 * Checks to see if {@link BendingPlayer} can be slowed.
 	 *

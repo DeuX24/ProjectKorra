@@ -11,6 +11,8 @@ import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.Ability;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
+import com.projectkorra.projectkorra.ability.util.PassiveManager;
+import com.projectkorra.projectkorra.keybending.PassiveToggles;
 import com.projectkorra.projectkorra.util.ChatUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -149,6 +151,16 @@ public class ToggleCommand extends PKCommand {
 				this.help(sender, false);
 			}
 
+		} else if (sender instanceof Player && args.size() == 2 && args.get(0).equalsIgnoreCase("passive")) {
+			final Player player = (Player) sender;
+			final CoreAbility passive = CoreAbility.getAbility(args.get(1));
+			if (!(passive instanceof PassiveAbility) || !PassiveManager.hasPassive(player, passive) && !PassiveToggles.isDisabled(player, passive)) {
+				ChatUtil.sendBrandingMessage(sender, ChatColor.RED + "You don't have a passive called " + args.get(1) + ".");
+				return;
+			}
+			final boolean enable = PassiveToggles.isDisabled(player, passive);
+			PassiveToggles.set(player, passive, enable);
+			ChatUtil.sendBrandingMessage(sender, passive.getElement().getColor() + passive.getName() + (enable ? " is back on." : " is now off."));
 		} else if (sender instanceof Player && args.size() == 2 && Element.fromString(args.get(0)) != null && !(Element.fromString(args.get(0)) instanceof SubElement)) {
 			Element e = Element.fromString(args.get(0));
 			final Player target = Bukkit.getPlayer(args.get(1));
@@ -189,6 +201,16 @@ public class ToggleCommand extends PKCommand {
 
 	@Override
 	protected List<String> getTabCompletion(final CommandSender sender, final List<String> args) {
+		if (args.size() == 1 && args.get(0).equalsIgnoreCase("passive") && sender instanceof Player) {
+			final List<String> names = new ArrayList<String>();
+			for (final CoreAbility ab : CoreAbility.getAbilities()) {
+				if (ab instanceof PassiveAbility && (PassiveManager.hasPassive((Player) sender, ab) || PassiveToggles.isDisabled((Player) sender, ab))) {
+					names.add(ab.getName());
+				}
+			}
+			Collections.sort(names);
+			return names;
+		}
 		if (args.size() >= 2 || !sender.hasPermission("bending.command.toggle.others")) {
 			return new ArrayList<String>();
 		}
@@ -202,6 +224,7 @@ public class ToggleCommand extends PKCommand {
 			Collections.sort(elements);
 			l.add("All");
 			l.add("Passives");
+			l.add("Passive");
 			l.addAll(elements);
 		} else {
 			for (final Player p : Bukkit.getOnlinePlayers()) {

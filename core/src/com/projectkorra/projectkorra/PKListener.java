@@ -958,6 +958,9 @@ public class PKListener implements Listener {
 			ChiPassive.blockChi(target);
 		}
 
+		if (KeyBending.ignoresRealClick(sourcePlayer)) {
+			return; // with key bending, punching doesn't trigger the bound ability
+		}
 		PlayerSwingEvent swingEvent = new PlayerSwingEvent(sourcePlayer); //Allow addons to handle a swing without
 		Bukkit.getPluginManager().callEvent(swingEvent);                  //needing to repeat the checks above themselves
 		if (swingEvent.isCancelled()) {

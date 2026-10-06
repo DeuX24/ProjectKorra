@@ -112,9 +112,12 @@ public final class KeyBending implements PluginMessageListener, Listener {
 		return player.isSneaking() || (VIRTUAL_SNEAK.contains(player.getUniqueId()) && getSelected(player) != null);
 	}
 
-	/** Whether a real left-click should be ignored for bending (key mode, outside a key's click). */
+	/**
+	 * Whether a real left-click should be ignored for bending (key mode, outside a key's click). This includes
+	 * multi-abilities such as Flight: their slot is picked with the hotbar, but only a key click uses it.
+	 */
 	public static boolean ignoresRealClick(final Player player) {
-		return !simulatingClick && getSelected(player) != null;
+		return !simulatingClick && isKeyMode(player);
 	}
 
 	@Override

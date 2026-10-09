@@ -113,9 +113,16 @@ public final class KeyBending implements PluginMessageListener, Listener {
 	}
 
 	/**
+	 * Abilities whose left-click steers or finishes the running ability, so a real click may continue them.
+	 * Others (MetalClips, FireManipulation, AirBlast, ...) would just fire again on every real click.
+	 */
+	private static final Set<String> REAL_CLICK_WHILE_ACTIVE = Set.of("flight", "octopusform", "earthsmash",
+			"earthgrab", "shockwave", "ripple", "eartharmor", "lavasurge", "bloodbending", "combustion");
+
+	/**
 	 * Whether a real left-click should be ignored for bending (key mode, outside a key's click). Real clicks
-	 * still work while a multi-ability (Flight, WaterArms) is bound or the selected ability is already running
-	 * (OctopusForm, EarthSmash, EarthGrab, ...), but a real click can't start an ability.
+	 * still work while a multi-ability (Flight, WaterArms) is bound or the selected ability is one of
+	 * {@link #REAL_CLICK_WHILE_ACTIVE} and already running, but a real click can't start or re-fire an ability.
 	 */
 	public static boolean ignoresRealClick(final Player player) {
 		if (simulatingClick) {
@@ -126,7 +133,8 @@ public final class KeyBending implements PluginMessageListener, Listener {
 			return false;
 		}
 		final CoreAbility ability = CoreAbility.getAbility(selected);
-		return ability == null || !CoreAbility.hasAbility(player, ability.getClass());
+		return ability == null || !REAL_CLICK_WHILE_ACTIVE.contains(ability.getName().toLowerCase())
+				|| !CoreAbility.hasAbility(player, ability.getClass());
 	}
 
 	@Override
